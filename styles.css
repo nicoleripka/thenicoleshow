@@ -154,6 +154,16 @@ a { color: var(--ink); }
   row-gap: 32px;
   column-gap: 16px;
 }
+.host-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 64px;
+}
+a.guest-name { color: inherit; }
 .guest { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 12px; }
 .guest-name { font-family: var(--display); font-size: 30px; line-height: 1.1; letter-spacing: -0.5px; }
 .guest-role { font-size: 16px; color: var(--muted); }
@@ -206,16 +216,16 @@ a { color: var(--ink); }
 }
 /* narrow phones: one guest per line so names and titles never wrap */
 @media (max-width: 520px) {
-  /* the logo reaches the middle of the screen here, so the mic sits just below the header on a short cord */
-  .mic { top: 58px; --crop: 780; }
-  .hosts { padding-top: 96px; }
+  /* the logo shrinks with the screen so it always stays left of the mic's cord */
+  .logo-name { font-size: min(28px, calc(8.2vw - 6.3px)); }
+  .logo-the { font-size: min(16px, calc(4.69vw - 3.6px)); }
+  .hosts { padding-top: 88px; }
   .guest-list { grid-template-columns: 1fr; row-gap: 20px; }
+  .host-list { flex-direction: column; gap: 12px; }
   .guest { gap: 4px; }
   .guest-name { font-size: 24px; }
 }
 @media (max-width: 360px) {
-  .logo-name { font-size: 24px; }
-  .logo-the { font-size: 14px; }
   .contact { font-size: 13px; }
   .guest-name { font-size: 22px; }
 }
