@@ -1,0 +1,219 @@
+/* ==========================================================
+   The Nicole Show — site styles
+   Colors, fonts and spacing live in the :root variables below.
+   ========================================================== */
+
+/* Fonts (from Fontshare, files in assets/fonts) */
+@font-face { font-family: 'Gambetta'; src: url('assets/fonts/Gambetta-Variable.woff2') format('woff2'); font-weight: 300 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Gambetta'; src: url('assets/fonts/Gambetta-VariableItalic.woff2') format('woff2'); font-weight: 300 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Supreme'; src: url('assets/fonts/Supreme-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+
+:root {
+  --bg: #FFFBEF;          /* "Whisper" light yellow page background */
+  --ink: #111111;         /* main text + line art */
+  --muted: #555555;       /* secondary text */
+  --display: 'Gambetta', Georgia, serif;                                    /* titles, names (Fontshare) */
+  --text: 'Supreme', 'Helvetica Neue', Helvetica, sans-serif;               /* body text (Fontshare) */
+  --margin: 80px;         /* left/right page margin */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--text);
+}
+
+a { color: var(--ink); }
+
+.page {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: 48px;
+}
+
+/* ---------- Top bar ---------- */
+.site-header {
+  position: relative;
+  z-index: 11;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 36px var(--margin) 0;
+}
+.logo { display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap; }
+.logo-the  { font-family: var(--display); font-style: italic; font-size: 20px; line-height: 1; }
+.logo-name { font-family: var(--display); font-size: 40px; line-height: 1; letter-spacing: -1.2px; }
+.contact   { font-size: 24px; line-height: 1.4; color: var(--ink); }
+.contact, .guest-name {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 6px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color .2s ease;
+}
+.contact:hover, .contact:focus-visible, .guest:hover .guest-name { text-decoration-color: currentColor; }
+
+/* ---------- Hanging mic ---------- */
+.mic {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 112px;
+  height: 659px;
+  pointer-events: none;
+}
+.mic-art { display: block; }
+
+@keyframes micSwing { 0%, 100% { transform: rotate(-0.8deg); } 50% { transform: rotate(0.8deg); } }
+.mic-swing {
+  transform-box: view-box;
+  transform-origin: 80px 0;
+  animation: micSwing 4.5s ease-in-out infinite;
+}
+@keyframes micWave { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+.mic-wave {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: micWave 1.1s ease-in-out infinite;
+}
+
+/* ---------- Host portraits ---------- */
+.hosts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 150px;               /* room for the mic between them */
+  padding: 212px var(--margin) 0;
+}
+.portrait {
+  width: 375px;
+  height: 500px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.portrait video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply; /* lets the drawing's white paper take on the page color */
+}
+/* the left drawing is smaller in its file, so it's scaled up to match */
+.portrait-left video { transform: scale(1.25); transform-origin: 50% 35%; }
+
+/* ---------- About + guests ---------- */
+.about {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 160px 40px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  text-align: center;
+}
+.about h2 {
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -1px;
+}
+.underline { text-decoration: underline 2px; text-underline-offset: 8px; }
+
+.starring {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  margin: 48px 0 88px;
+}
+.starring-label {
+  margin: 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--muted);
+}
+.guest-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); /* wraps as guests are added */
+  row-gap: 32px;
+  column-gap: 16px;
+}
+.guest { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 12px; }
+.guest-name { font-family: var(--display); font-size: 30px; line-height: 1.1; letter-spacing: -0.5px; }
+.guest-role { font-size: 16px; color: var(--muted); }
+
+.sponsor {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.sponsor img { height: 16px; width: auto; display: block; position: relative; top: 2px; }
+
+/* ---------- Tablets ---------- */
+@media (max-width: 1100px) {
+  :root { --margin: clamp(24px, 5.5vw, 80px); }
+  .mic { display: none; }
+  .hosts { gap: 4vw; padding-top: 72px; }
+  .portrait { width: min(375px, 42vw); height: calc(min(375px, 42vw) * 4 / 3); }
+  .about { padding: 110px var(--margin) 80px; }
+  .about h2 { font-size: clamp(34px, 5.6vw, 56px); }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 720px) {
+  :root { --gap: 12px; }
+  .site-header { padding-top: 28px; gap: 16px; }
+  .logo-name { font-size: 28px; letter-spacing: -0.6px; }
+  .logo-the { font-size: 16px; }
+  .contact { font-size: 17px; white-space: nowrap; }
+  .hosts { gap: var(--gap); padding-top: 40px; }
+  /* two portraits side by side, filling the width between the margins */
+  .portrait { width: calc((100vw - 2 * var(--margin) - var(--gap)) / 2); height: calc((100vw - 2 * var(--margin) - var(--gap)) / 2 * 4 / 3); }
+  .about { padding: 64px var(--margin) 56px; gap: 24px; }
+  .about h2 { font-size: clamp(28px, 8.5vw, 40px); letter-spacing: -0.5px; margin-bottom: 0; }
+  .starring { margin: 32px 0 56px; gap: 24px; }
+  .starring-label { font-size: 20px; }
+  .guest-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; column-gap: 8px; }
+  .guest { padding: 4px 0; }
+  .guest:last-child:nth-child(odd) { grid-column: 1 / -1; } /* center a lone last guest */
+  .guest-name { font-size: 22px; }
+  .guest-role { font-size: 15px; }
+}
+/* narrow phones: one guest per line so names and titles never wrap */
+@media (max-width: 520px) {
+  .guest-list { grid-template-columns: 1fr; row-gap: 20px; }
+  .guest { gap: 4px; }
+  .guest-name { font-size: 24px; }
+}
+@media (max-width: 360px) {
+  .logo-name { font-size: 24px; }
+  .logo-the { font-size: 14px; }
+  .contact { font-size: 15px; }
+  .guest-name { font-size: 22px; }
+}
+
+/* ---------- Respect "reduce motion" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .mic-swing, .mic-wave { animation: none; }
+}

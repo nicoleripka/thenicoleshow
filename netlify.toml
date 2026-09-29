@@ -1,0 +1,9 @@
+# Netlify settings for The Nicole Show.
+# This is a plain static site: no build step, publish this folder as-is.
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
