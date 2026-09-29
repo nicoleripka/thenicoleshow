@@ -48,7 +48,7 @@ a { color: var(--ink); }
 .logo { display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap; }
 .logo-the  { font-family: var(--display); font-style: italic; font-size: 20px; line-height: 1; }
 .logo-name { font-family: var(--display); font-size: 40px; line-height: 1; letter-spacing: -1.2px; }
-.contact   { font-size: 24px; line-height: 1.4; color: var(--ink); }
+.contact   { font-size: 16px; line-height: 1.4; color: var(--ink); }
 .contact, .guest-name {
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -139,9 +139,9 @@ a { color: var(--ink); }
 }
 .starring-label {
   margin: 0;
-  font-family: var(--display);
+  font-family: var(--text);   /* same sans as the guest titles */
   font-style: italic;
-  font-size: 24px;
+  font-size: 16px;
   color: var(--muted);
 }
 .guest-list {
@@ -173,8 +173,11 @@ a { color: var(--ink); }
 /* ---------- Tablets ---------- */
 @media (max-width: 1100px) {
   :root { --margin: clamp(24px, 5.5vw, 80px); }
-  .mic { display: none; }
-  .hosts { gap: 4vw; padding-top: 72px; }
+  /* smaller mic on a short cord, hanging from the top above the portraits.
+     --s = size (1 = desktop), --crop = how much of the top of the cord is cut off */
+  .mic { --s: 0.55; --crop: 640; width: calc(160px * var(--s)); height: calc((941 - var(--crop)) * 1px * var(--s)); overflow: hidden; }
+  .mic-art { width: 100%; height: auto; margin-top: calc(var(--crop) * -1px * var(--s)); }
+  .hosts { gap: 4vw; padding-top: 120px; }
   .portrait { width: min(375px, 42vw); height: calc(min(375px, 42vw) * 4 / 3); }
   .about { padding: 110px var(--margin) 80px; }
   .about h2 { font-size: clamp(34px, 5.6vw, 56px); }
@@ -186,14 +189,15 @@ a { color: var(--ink); }
   .site-header { padding-top: 28px; gap: 16px; }
   .logo-name { font-size: 28px; letter-spacing: -0.6px; }
   .logo-the { font-size: 16px; }
-  .contact { font-size: 17px; white-space: nowrap; }
-  .hosts { gap: var(--gap); padding-top: 40px; }
+  .contact { font-size: 14px; white-space: nowrap; }
+  .mic { --s: 0.4; }
+  .hosts { gap: var(--gap); padding-top: 72px; }
   /* two portraits side by side, filling the width between the margins */
   .portrait { width: calc((100vw - 2 * var(--margin) - var(--gap)) / 2); height: calc((100vw - 2 * var(--margin) - var(--gap)) / 2 * 4 / 3); }
   .about { padding: 64px var(--margin) 56px; gap: 24px; }
   .about h2 { font-size: clamp(28px, 8.5vw, 40px); letter-spacing: -0.5px; margin-bottom: 0; }
   .starring { margin: 32px 0 56px; gap: 24px; }
-  .starring-label { font-size: 20px; }
+  .starring-label { font-size: 15px; }
   .guest-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; column-gap: 8px; }
   .guest { padding: 4px 0; }
   .guest:last-child:nth-child(odd) { grid-column: 1 / -1; } /* center a lone last guest */
@@ -202,6 +206,9 @@ a { color: var(--ink); }
 }
 /* narrow phones: one guest per line so names and titles never wrap */
 @media (max-width: 520px) {
+  /* the logo reaches the middle of the screen here, so the mic sits just below the header on a short cord */
+  .mic { top: 58px; --crop: 780; }
+  .hosts { padding-top: 96px; }
   .guest-list { grid-template-columns: 1fr; row-gap: 20px; }
   .guest { gap: 4px; }
   .guest-name { font-size: 24px; }
@@ -209,7 +216,7 @@ a { color: var(--ink); }
 @media (max-width: 360px) {
   .logo-name { font-size: 24px; }
   .logo-the { font-size: 14px; }
-  .contact { font-size: 15px; }
+  .contact { font-size: 13px; }
   .guest-name { font-size: 22px; }
 }
 
