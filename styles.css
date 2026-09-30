@@ -144,16 +144,28 @@ a { color: var(--ink); }
   font-size: 16px;
   color: var(--muted);
 }
+/* Guests roll like a show's end credits, driven by scrolling: scroll down and they roll up.
+   The list loops seamlessly, so the window is always full of names.
+   --window = height of the visible area. The rolling is set up by the script at the bottom of index.html. */
 .guest-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); /* wraps as guests are added */
-  row-gap: 32px;
-  column-gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
 }
+.credits { width: 100%; max-width: 560px; }
+.credits.rolling {
+  --window: 440px;
+  height: var(--window);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+}
+.credits.rolling .credits-track { will-change: transform; }
+.credits.rolling .guest-list { padding-bottom: 28px; } /* same gap between the loop's copies */
 .host-list {
   list-style: none;
   margin: 0;
@@ -208,9 +220,9 @@ a.guest-name { color: inherit; }
   .about h2 { font-size: clamp(28px, 8.5vw, 40px); letter-spacing: -0.5px; margin-bottom: 0; }
   .starring { margin: 32px 0 56px; gap: 24px; }
   .starring-label { font-size: 15px; }
-  .guest-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; column-gap: 8px; }
+  .credits.rolling { --window: 380px; }
+  .guest-list { gap: 22px; }
   .guest { padding: 4px 0; }
-  .guest:last-child:nth-child(odd) { grid-column: 1 / -1; } /* center a lone last guest */
   .guest-name { font-size: 22px; }
   .guest-role { font-size: 15px; }
 }
@@ -220,7 +232,6 @@ a.guest-name { color: inherit; }
   .logo-name { font-size: min(28px, calc(8.2vw - 6.3px)); }
   .logo-the { font-size: min(16px, calc(4.69vw - 3.6px)); }
   .hosts { padding-top: 88px; }
-  .guest-list { grid-template-columns: 1fr; row-gap: 20px; }
   .host-list { flex-direction: column; gap: 12px; }
   .guest { gap: 4px; }
   .guest-name { font-size: 24px; }
@@ -233,4 +244,5 @@ a.guest-name { color: inherit; }
 /* ---------- Respect "reduce motion" ---------- */
 @media (prefers-reduced-motion: reduce) {
   .mic-swing, .mic-wave { animation: none; }
+
 }
