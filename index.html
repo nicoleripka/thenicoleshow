@@ -37,7 +37,7 @@
       <h2>We ask really impressive people <span class="underline">really</span> important questions.</h2>
 
       <div class="starring">
-        <p class="starring-label">Hosted by</p>
+        <p class="starring-label">Hosted By</p>
         <!-- HOSTS -->
         <ul class="host-list">
           <li class="guest"><a class="guest-name" href="https://www.linkedin.com/in/nicoledetommaso/" target="_blank" rel="noopener">Nicole DeTommaso</a></li>
@@ -45,7 +45,8 @@
         </ul>
 
         <p class="starring-label">Starring</p>
-        <!-- GUEST LIST: add a new guest by copying one <li> block below -->
+        <!-- GUEST LIST: rolls like end credits as you scroll. Add a new guest by copying one <li> block below. -->
+        <div class="credits"><div class="credits-track">
         <ul class="guest-list">
         <li class="guest">
           <span class="guest-name">Dylan Babbs</span>
@@ -83,12 +84,47 @@
           <span class="guest-name">Mina Fahmi</span>
           <span class="guest-role">Founder, Sandbar</span>
         </li>
-        </ul>
+        </ul></div>
+        </div>
       </div>
 
       <p class="sponsor">presented by: <img src="assets/granola-logo.png" alt="Granola"></p>
     </section>
 
   </div>
+  <script>
+    // Credits roll: scrolling the page rolls the guest list, which loops forever with no gaps.
+    // Skipped for visitors who ask for reduced motion (they get a plain list).
+    (function () {
+      var box = document.querySelector('.credits');
+      if (!box || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var track = box.querySelector('.credits-track'), list = track.querySelector('.guest-list');
+      box.classList.add('rolling');
+      // add copies until there's always enough list to fill the window (screen readers hear it once)
+      do { var copy = list.cloneNode(true); copy.setAttribute('aria-hidden', 'true'); track.appendChild(copy); }
+      while (track.offsetHeight < list.offsetHeight + box.clientHeight);
+
+      var SPEED = 1.2;                                  // credits move 1.2px per 1px scrolled
+      var offset = 0, lastY = scrollY, ticking = false, lastTouch = null;
+      function draw() {
+        var loop = list.offsetHeight;                   // one full copy, including the gap
+        offset = ((offset % loop) + loop) % loop;
+        track.style.transform = 'translateY(' + (-offset) + 'px)';
+        ticking = false;
+      }
+      function move(d) { offset += d * SPEED; if (!ticking) { ticking = true; requestAnimationFrame(draw); } }
+      addEventListener('scroll', function () { move(scrollY - lastY); lastY = scrollY; }, { passive: true });
+      // at the very top or bottom of the page, keep rolling while the visitor keeps scrolling
+      function atEdge(d) { return (d > 0 && innerHeight + scrollY >= document.documentElement.scrollHeight - 1) || (d < 0 && scrollY <= 0); }
+      addEventListener('wheel', function (e) { if (atEdge(e.deltaY)) move(e.deltaY); }, { passive: true });
+      addEventListener('touchstart', function (e) { lastTouch = e.touches[0].clientY; }, { passive: true });
+      addEventListener('touchmove', function (e) {
+        var y = e.touches[0].clientY, d = lastTouch - y; lastTouch = y;
+        if (atEdge(d)) move(d);
+      }, { passive: true });
+      addEventListener('resize', draw);
+      draw();
+    })();
+  </script>
 </body>
 </html>
